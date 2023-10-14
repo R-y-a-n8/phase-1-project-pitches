@@ -1,62 +1,70 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Foodie Place</title>
-    <link rel="stylesheet" type="text/css" href="index.css">
-</head>
-<body>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Weather App</title>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
 
-    <h1>Foodie Palace</h1>
-    <nav>
-        <ul>
-            <a href="#"><li>Home</li></a>
-            <a href="#"><li>Order</li></a>
-            <a href="#"><li>Near</li></a>
-            <a href="#"><li>About</li></a>
-        </ul>
-    </nav>
+    <div class="card">
+        <div class="search">
+            <input type="text" id="cityInput" placeholder="Enter city name" spellcheck="false">
+            <button id="searchButton">Search</button>
+        </div>
+        <div class="weather">
+            <img src="" class="weather-icon" id="weatherIcon">
+            <h1 class="temp" id="temperature">22°C</h1>
+            <h2 class="city" id="cityName">New York</h2>
+            <div class="details">
+                <div class="col">
+                    <img src="">
+                    <div>
+                        <p class="humidity" id="humidity">50%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="">
+                    <div>
+                        <p class="wind" id="windSpeed">15 km/hr</p>
+                        <p>Wind speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <section class="items">
-        <div class="item">
-            <img src="https://plus.unsplash.com/premium_photo-1675451537771-0dd5b06b3985?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80">
-            <h4>Pizza</h4>
-            <button>Order</button>
-        </div>
-        <div class="item">
-            <img src="https://images.unsplash.com/photo-1695383734051-14c559dce24f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80">
-            <h4>Pizza Veg</h4>
-            <button>Order</button>
-        </div>
-        <div class="item">
-            <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1065&q=80">
-            <h4>Burger</h4>
-            <button>Order</button>
-        </div>
-        <div class="item">
-            <img src="https://images.unsplash.com/photo-1520072959219-c595dc870360?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=990&q=80">
-            <h4>burger Veg</h4>
-            <button>Order</button>
-        </div>
-        <div class="item">
-        <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1160&q=80">
-        <h4>Pasta</h4>
-        <button>Order</button>
-    </div>
-    <div class="item">
-        <img src="https://images.unsplash.com/photo-1516100882582-96c3a05fe590?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80">
-        <h4>Pasta Veg</h4>
-        <button>Order</button>
-    </div>
-    <div class="item">
-            <img src="https://images.unsplash.com/photo-1507133750040-4a8f57021571?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80">
-            <h4>Coffee</h4>
-            <button>Order</button>
-        </div>
-        <div class="item">
-            <img src="https://images.unsplash.com/photo-1568909344668-6f14a07b56a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1035&q=80">
-            <h4>Juice</h4>
-            <button>Order</button>
-        </div>
-    </section>
-</body>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const apiKey = "3c172af6fcc92ab4ba12cf2aa2d8b1e4";
+            const searchButton = document.getElementById("searchButton");
+            const cityInput = document.getElementById("cityInput");
+    
+            searchButton.addEventListener("click", () => {
+                const city = cityInput.value;
+                if (city) {
+                    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            const temperature = data.main.temp;
+                            const humidity = data.main.humidity;
+                            const windSpeed = data.wind.speed;
+                            const weatherIcon = data.weather[0].icon;
+    
+                            document.getElementById("temperature").textContent = `${temperature}°C`;
+                            document.getElementById("humidity").textContent = `${humidity}%`;
+                            document.getElementById("windSpeed").textContent = `${windSpeed} km/hr`;
+                            document.getElementById("weatherIcon").src = `http://openweathermap.org/img/wn/${weatherIcon}.png`;
+                            document.getElementById("cityName").textContent = city;
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
+                }
+            });
+        });
+    </script>
+   
+    </body>
 </html>
